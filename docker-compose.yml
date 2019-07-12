@@ -50,6 +50,22 @@ services:
     depends_on:
       - elasticsearch
 
+  filebeat:
+    image: guisen/filebeat
+    volumes:
+      - /home/ubuntu/rancher-elk/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - /home/ubuntu/rancher-elk/filebeat/filebeat.template.json:/usr/share/filebeat/filebeat.template.json
+      - /var/lib/docker/containers:/usr/share/dockerlogs/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      io.rancher.scheduler.affinity:host_label: elk=true
+      elk: true
+    networks:
+      - elk
+    depends_on:
+      - logstash
+    restart: on-failure
+
 networks:
 
   elk:
