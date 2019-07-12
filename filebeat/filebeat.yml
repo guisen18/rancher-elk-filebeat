@@ -1,0 +1,17 @@
+output:
+  logstash:
+    enabled: true
+    hosts:
+      - logstash:5000
+    timeout: 60
+
+filebeat:
+  inputs:
+#    -
+#      paths:
+#        - /var/log/syslog
+#      document_type: syslog
+    -
+      paths:
+        - /usr/share/dockerlogs/data/*/*.log
+      document_type: docker-log
