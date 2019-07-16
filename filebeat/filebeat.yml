@@ -14,3 +14,22 @@ filebeat:
     - type: container
       paths:
         - '/usr/share/dockerlogs/data/*/*.log'
+      fields:
+        type: docker-log
+      exclude_file: [ 'ba04dc7d5f0b*.log' ]
+#      json.keys_under_root: true
+#      json.add_error_key: true
+#      json.message_key: log
+      multiline.pattern: '^{'
+      multiline.negate: true
+      multiline.match: after
+      tail_files: true
+    - type: log
+      paths:
+        - '/laravel/storage/logs/laravel*.log'
+      multiline.pattern: '^\#'
+      multiline.negate: true
+      multiline.match: after
+      fields:
+        type: laravel-log
+      tail_files: true
